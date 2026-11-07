@@ -1,29 +1,30 @@
-create database Bank;
+create database bankingdb;
+use bankingdb; 
 
-use Bank;
+create table customer(customerID int,FirstName VARCHAR(50),LastName VARCHAR(50),Email VARCHAR(100),Phone VARCHAR(20),DateofBirth DATE);
+alter table customer add constraint primary key (customerID);
+alter table customer add constraint unique (Email);
+alter table customer modify FirstName varchar(50) not null; 
 
-create table customer(customerID int,FirstName varchar(50),LastName varchar(100),Email varchar(100),Phone int);
 
 create table Accounts(AccountID int, AccountType Varchar(20), Balance decimal(10,2)); 
-
-select * from Accounts; 
-
-create table Transactions(TransactionID int,TransactionDate Date,Amount decimal(10,2),TransactionType varchar(20)); 
-
-select * from Transactions; 
-
-create table Branches(BranchID int, BranchName varchar(50), BranchAddress varchar(50), BranchPhone Varchar(15)); 
-
-select * from Branches; 
-
-create table AccountBranches(AssignmentDate Date); 
-
-select * from AccountBranches; 
+alter table Accounts add constraint primary key(AccountID);
+alter table Accounts add column customerID int; 
+alter table Accounts add column BranchID int; 
+alter table Accounts add constraint foreign key(customerID) references customer(customerID); 
+alter table Accounts add constraint foreign key(BranchID) references Branches(BranchID); 
 
 create table Loans(LoanID int,LoanAmount decimal(10,2),InterestRate decimal(10,2),StartDate Date,EndDate Date); 
+alter table Loans add column customerID int; 
+alter table Loans add constraint primary key(LoanID);
+alter table Loans add constraint foreign key(customerID) references customer(customerID);
 
-alter table customer add column DateOfBirth date; 
+create table Transactions(TransactionID int,TransactionDate Date,Amount decimal(10,2),TransactionType varchar(20)); 
+alter table Transactions add constraint primary key(TransactionID); 
+alter table Transactions add column AccountID int; 
+alter table Transactions add constraint foreign key(AccountID) references Accounts(AccountID);
 
- alter table customer modify phone varchar(20); 
- 
- select * from customer;
+create table Branches(BranchID int, BranchName varchar(50), BranchAddress varchar(50), BranchPhone Varchar(15)); 
+alter table Branches add constraint primary key(BranchID); 
+
+create table stu(name varchar(200),marks int); 
